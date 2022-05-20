@@ -1,12 +1,6 @@
-module github.com/chibuikeIg/Rss_blog/controllers
+module github.com/chibuikeIg/Rss_blog/config
 
 go 1.18
-
-require (
-	github.com/chibuikeIg/Rss_blog/config v0.0.0-00010101000000-000000000000
-	github.com/julienschmidt/httprouter v1.3.0
-	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
-)
 
 require (
 	github.com/go-stack/stack v1.8.0 // indirect
@@ -22,7 +16,6 @@ require (
 	golang.org/x/crypto v0.0.0-20201216223049-8b5274cf687f // indirect
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
 	golang.org/x/text v0.3.5 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/chibuikeIg/Rss_blog/config => ../config
+replace github.com/chibuikeIg/Rss_blog/config => ./config
