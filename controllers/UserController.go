@@ -9,25 +9,21 @@ import (
 	router "github.com/julienschmidt/httprouter"
 )
 
-var tpl *template.Template
-
 var DB *config.Database
 
-func init() {
-	tpl = template.Must(template.ParseGlob("views/*"))
+type UserController struct {
+	View *template.Template
 }
 
-type UserController struct{}
-
-func NewUserController(DBConn *config.Database) *UserController {
+func NewUserController(DBConn *config.Database, view *template.Template) *UserController {
 	DB = DBConn
-	return &UserController{}
 
+	return &UserController{view}
 }
 
 func (uc UserController) Index(w http.ResponseWriter, r *http.Request, _ router.Params) {
 
-	err := tpl.ExecuteTemplate(w, "index.html", nil)
+	err := uc.View.ExecuteTemplate(w, "index.html", nil)
 
 	if err != nil {
 		log.Fatalln(err)
