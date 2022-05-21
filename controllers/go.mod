@@ -9,11 +9,15 @@ require (
 )
 
 require (
+	github.com/chibuikeIg/Rss_blog/auth v0.0.0-00010101000000-000000000000 // indirect
+	github.com/chibuikeIg/Rss_blog/middleware v0.0.0-00010101000000-000000000000 // indirect
+	github.com/chibuikeIg/Rss_blog/models v0.0.0-20220521113637-c60a7fc6938e // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.0.2 // indirect
 	github.com/xdg-go/stringprep v1.0.2 // indirect
@@ -26,3 +30,7 @@ require (
 )
 
 replace github.com/chibuikeIg/Rss_blog/config => ../config
+
+replace github.com/chibuikeIg/Rss_blog/auth => ../auth
+
+replace github.com/chibuikeIg/Rss_blog/middleware => /../middleware

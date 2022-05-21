@@ -7,6 +7,13 @@ replace github.com/chibuikeIg/Rss_blog/controllers => ./controllers
 require github.com/chibuikeIg/Rss_blog/controllers v0.0.0-00010101000000-000000000000
 
 require (
+	github.com/chibuikeIg/Rss_blog/auth v0.0.0-00010101000000-000000000000 // indirect
+	github.com/chibuikeIg/Rss_blog/middleware v0.0.0-00010101000000-000000000000 // indirect
+	github.com/chibuikeIg/Rss_blog/models v0.0.0-20220521113637-c60a7fc6938e // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
+)
+
+require (
 	github.com/chibuikeIg/Rss_blog/config v0.0.0-00010101000000-000000000000 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
@@ -27,3 +34,7 @@ require (
 replace github.com/chibuikeIg/Rss_blog/models => ./models
 
 replace github.com/chibuikeIg/Rss_blog/config => ./config
+
+replace github.com/chibuikeIg/Rss_blog/auth => ./auth
+
+replace github.com/chibuikeIg/Rss_blog/middleware => ./middleware
