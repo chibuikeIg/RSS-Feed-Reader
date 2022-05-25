@@ -9,15 +9,12 @@ import (
 	router "github.com/julienschmidt/httprouter"
 )
 
-var DB *config.Database
-
 type UserController struct {
 	View *template.Template
 }
 
 func NewUserController(DBConn *config.Database, view *template.Template) *UserController {
 	DB = DBConn
-
 	return &UserController{view}
 }
 
@@ -28,5 +25,20 @@ func (uc UserController) Index(w http.ResponseWriter, r *http.Request, _ router.
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+}
+
+func (uc UserController) Store(w http.ResponseWriter, r *http.Request, _ router.Params) {
+
+	validation := uc.ValidateLoginRequest(r)
+
+	if validation != nil {
+
+	}
+}
+
+func (uc UserController) ValidateLoginRequest(r *http.Request) map[string]string {
+
+	return map[string]string{}
 
 }
