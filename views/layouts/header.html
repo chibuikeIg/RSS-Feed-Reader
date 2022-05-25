@@ -1,0 +1,58 @@
+{{ define "header" }}
+
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+            <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+            <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+            <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
+            <link href="https://fonts.googleapis.com/css?family=Rum+Raisin&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Sulphur+Point&display=swap" rel="stylesheet">
+            <title>Document</title>
+        </head>
+        <body>
+            <div class="cus-container dark-bg">
+                <header>
+                    <div class="logo my-cus-pt">
+                        <strong class="raisin-font white-color">PaulIG | Blog</strong>
+                    </div>
+                    <nav>
+                        <ul class="desktop-nav">
+                            <li><a href="index.html" class="white-color">Following</a></li>
+                            <li><a href="#" class="white-color">Manage Followings</a></li>
+                            <li><a href="#" class="white-color">Feed Settings</a></li>
+                            <li class="mt-1">
+                                <form class="search-field">
+                                    <input type="text" name="search" required placeholder="Search" class="form-control">
+                                </form>
+                                <a href="#" class="search-icon"><i class="fa fa-search"></i></a>
+                            </li>
+                            <li class="icon-list"><a href="#" class="white-color toggle-mode"><i class="fa fa-lightbulb icon-font switch-icon"></i></a></li>
+                            <li class="icon-list"><a href="#" class="white-color"><i class="fa fa-bookmark icon-font"></i>&nbsp;&nbsp;Login</a></li>
+                        </ul>
+                        <ul class="mobile-nav">
+                            <li><a href="javascript:void(0)" class="toggle-nav-bar white-color"><i class="fa fa-bars bars-icon fa-bar"></i></a></li>
+                            <li><a href="#" class="white-color toggle-mode"><i class="fa fa-lightbulb switch-icon"></i></a></li>
+                            <li><a href="javascript:void(0)" class="toggle-search-bar white-color"><i class="fa fa-search"></i></a></li>
+                        </ul>
+                    </nav>
+                </header>
+                <!-- // mobile search bar -->
+                <div class="search-bar">
+                    <form>
+                        <input type="text" name="search" required placeholder="search" class="my-cus-form-control">
+                    </form>
+                </div>
+                <!-- // mobile navbar -->
+                <div class="nav-bar">
+                    <div class="nav-link dark-bg"><a href="#" class="raisin-font white-color">Following</a></div>
+                    <div class="nav-link dark-bg"><a href="#" class="raisin-font white-color">Manage Followings</a></div>
+                    <div class="nav-link dark-bg"><a href="#" class="raisin-font white-color">Feed Settings</a></div>
+                    <div class="nav-link dark-bg"><a href="#" class="raisin-font white-color"><i class="fa fa-bookmark"></i>&nbsp;&nbsp;Login</a></div>
+                </div>
+                <!-- // mobile navbar ends here -->
+{{end}}

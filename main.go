@@ -3,20 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
-	"text/template"
 
 	"github.com/chibuikeIg/Rss_blog/config"
 	"github.com/chibuikeIg/Rss_blog/controllers"
 	"github.com/julienschmidt/httprouter"
 )
-
-var tpl *template.Template
-
-func init() {
-
-	tpl = template.Must(template.ParseGlob("views/*"))
-
-}
 
 func main() {
 
@@ -37,7 +28,7 @@ func main() {
 
 	router.ServeFiles("/assets/*filepath", http.Dir("./public/assets"))
 
-	uc := controllers.NewUserController(DB, tpl)
+	uc := controllers.NewUserController(DB)
 
 	router.GET("/", uc.Index)
 
