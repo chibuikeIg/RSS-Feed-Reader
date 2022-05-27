@@ -43,6 +43,9 @@
                   <div class="card border-0 shadow rounded-3 my-5">
                     <div class="card-body p-4 p-sm-5">
                       <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+                      {{ if .credential }}
+                      <div class="alert alert-danger">{{ .credential }}</div>
+                      {{end}}
                       <form method="post" action="/login">
                         <div class="form-floating mb-3">
                           <label class="label-control" for="floatingInput">Email address</label>
