@@ -12,7 +12,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 
-		http.Redirect(w, r, "/tests", http.StatusSeeOther)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 
 		return
 	}
@@ -23,7 +23,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 
 	if !ok {
 
-		http.Redirect(w, r, "/tests", http.StatusSeeOther)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 
 	return
@@ -43,7 +43,7 @@ func Guest(w http.ResponseWriter, r *http.Request) {
 
 	if ok {
 
-		http.Redirect(w, r, "/d", http.StatusSeeOther)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 
 	return

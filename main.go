@@ -28,9 +28,12 @@ func main() {
 
 	router.ServeFiles("/assets/*filepath", http.Dir("./public/assets"))
 
-	uc := controllers.NewUserController(DB)
+	hc := controllers.NewHomeController(DB)
+	lc := controllers.NewLoginController(DB)
 
-	router.GET("/", uc.Index)
+	router.GET("/", hc.Index)
+
+	router.GET("/login", lc.Create)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 

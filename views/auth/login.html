@@ -2,11 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
+    <link href="https://fonts.googleapis.com/css?family=Rum+Raisin&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Sulphur+Point&display=swap" rel="stylesheet">
+    <title>PaulIG | RSS Reader | Sign In</title>
+    <style>
+        body {
+            background: #000;
+            background: linear-gradient(to right, #0062E6, #33AEFF);
+        }
+
+        .btn-login {
+            font-size: 0.9rem;
+            letter-spacing: 0.05rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .btn-google {
+            color: white !important;
+            background-color: #ea4335;
+        }
+
+        .btn-facebook {
+            color: white !important;
+            background-color: #3b5998;
+        }
+    </style>
 </head>
 <body>
-    Hello world yaadadadd
+    <div class="cus-container">
+        
+        <div class="container mt-auto">
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                  <div class="card border-0 shadow rounded-3 my-5">
+                    <div class="card-body p-4 p-sm-5">
+                      <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+                      <form>
+                        <div class="form-floating mb-3">
+                          <label class="label-control" for="floatingInput">Email address</label>
+                          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                        </div>
+                        <div class="form-floating mb-3">
+                          <label class="label-control" for="floatingPassword">Password</label>
+                          <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                        </div>
+                        <div class="d-grid">
+                          <button class="btn btn-primary btn-login btn-block text-uppercase fw-bold" type="submit">Sign
+                            in</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="assets/js/toggle.js"></script>
+    <script src="assets/js/switch.js"></script>
+    <script src="assets/js/app.js"></script>
 </body>
 </html>
