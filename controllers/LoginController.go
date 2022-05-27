@@ -23,3 +23,9 @@ func (lc LoginController) Create(w http.ResponseWriter, r *http.Request, _ route
 
 	View(w, "login.html", nil)
 }
+
+func (lc LoginController) Store(w http.ResponseWriter, r *http.Request, _ router.Params) {
+
+	middleware.Guest(w, r)
+
+}
