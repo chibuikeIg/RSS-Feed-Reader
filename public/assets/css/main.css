@@ -31,7 +31,7 @@ header{
     top:7px;
 }
 
-.drop-menu{
+.drop-menu {
     position: absolute;
     width:30%;
     right:30px;
@@ -219,9 +219,18 @@ nav ul li a:hover{
 }
 
 .footer{
-    border-top: 1px solid #eee8e8;
+    border: 1px solid #eee8e8;
     padding:20px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
+
+.cus-container{
+    position: relative;
+    min-height: 100vh;
+}
+
 
 .left-card{
     margin:18.3rem auto;

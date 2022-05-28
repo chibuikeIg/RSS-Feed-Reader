@@ -59,7 +59,7 @@ func (lc LoginController) Store(w http.ResponseWriter, r *http.Request, _ router
 
 	auth.Login(&user, w)
 
-	http.Redirect(w, r, "/", http.StatusSeeOther)
+	http.Redirect(w, r, "/following", http.StatusSeeOther)
 
 	return
 }

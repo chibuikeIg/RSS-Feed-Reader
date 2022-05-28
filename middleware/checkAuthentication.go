@@ -43,7 +43,7 @@ func Guest(w http.ResponseWriter, r *http.Request) {
 
 	if ok {
 
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		http.Redirect(w, r, "/following", http.StatusSeeOther)
 	}
 
 	return

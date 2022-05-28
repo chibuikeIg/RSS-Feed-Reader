@@ -12,7 +12,7 @@ import (
 func main() {
 
 	// DB config
-	DB, cxtCancel := config.NewDatabase(10)
+	DB, cxtCancel := config.NewDatabase(30)
 
 	defer cxtCancel()
 
@@ -28,10 +28,12 @@ func main() {
 
 	router.ServeFiles("/assets/*filepath", http.Dir("./public/assets"))
 
-	hc := controllers.NewHomeController(DB)
+	fc := controllers.NewFollowingController(DB)
 	lc := controllers.NewLoginController(DB)
 
-	router.GET("/", hc.Index)
+	router.GET("/following", fc.Index)
+
+	router.GET("/following/manage", fc.Create)
 
 	router.GET("/login", lc.Create)
 	router.POST("/login", lc.Store)
