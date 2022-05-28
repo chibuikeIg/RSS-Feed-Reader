@@ -35,6 +35,8 @@ func main() {
 
 	router.GET("/following/manage", fc.Create)
 
+	router.POST("/following/manage", fc.Store)
+
 	router.GET("/login", lc.Create)
 	router.POST("/login", lc.Store)
 

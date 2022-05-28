@@ -1,9 +1,26 @@
 {{template "header"}}
 
-<div class="container">
+<div class="container pb-5">
     <div class="row">
         <!-- // left side content  -->
         <div class="col-md-10 offset-md-1">
+
+            <!-- // add rss starts -->
+            <div class="row mt-5 mb">
+                <div class="col-md-12">
+                    <form class="add-rss-form" method="post">
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" placeholder="Enter rss link" name="rss_link">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary add-feed-btn" type="submit">Add Feed</button>
+                            </div>
+                        </div>
+                        <span style="display: none;font-size: 12px;" class="rss_link text-danger"></span>
+                        <p class="text-info mt-2">You can add the website's domain name like this <a href="https://lifehacker.com" target="_blank" class="text-info"><u>https://lifehacker.com</u></a> or the exact rss link url <a href="https://porh.hashnode.dev/rss.xml" target="_blank" class="text-info text-i"><u>https://porh.hashnode.dev/rss.xml</u></a></p>
+                    </form>
+                </div>
+            </div>
+            <!-- // add rss ends  -->
 
             <!-- // articles -->
             <div class="row mt-5 article-card border-wt">
@@ -24,3 +41,58 @@
 </div>
 
 {{ template "footer" }}
+
+{{ define "js" }}
+<script>
+    $(document).ready(()=> {
+
+        $(".add-rss-form").submit((e)=> {
+
+            e.preventDefault()
+
+            let formData = new FormData($(".add-rss-form").get(0))
+
+            $.ajax({
+                method: "POST",
+                url: "/following/manage",
+                processData: false,
+                contentType: false,
+                data: formData,
+                beforeSend: () => {
+
+                    $(".add-feed-btn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="visually-hidden">Loading...</span>')
+
+                },
+                success: (response) => {
+
+                    response = JSON.parse(response)
+
+                    $(".add-feed-btn").html('Add Feed')
+
+                    if(response.rss_link) {
+
+                        $(".rss_link").css('display', 'block')
+                        $(".rss_link").text(response.rss_link)
+
+                    } else {
+
+                        $(".rss_link").css('display', 'none')
+                        $(".rss_link").text('')
+
+                    }
+
+                    
+                },
+                error: (error) => {
+
+                    $(".add-feed-btn").html('Add Feed')
+
+                    alert('Opps! Technical error occured: '+error.responseText)
+                }
+            })
+
+        })
+
+    })
+</script>
+{{end}}

@@ -219,7 +219,7 @@ nav ul li a:hover{
 }
 
 .footer{
-    border: 1px solid #eee8e8;
+    border-top: 1px solid #eee8e8;
     padding:20px;
     position: absolute;
     bottom: 0;
