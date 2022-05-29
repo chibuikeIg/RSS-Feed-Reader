@@ -60,7 +60,7 @@
                 data: formData,
                 beforeSend: () => {
 
-                    $(".add-feed-btn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="visually-hidden">Loading...</span>')
+                    $(".add-feed-btn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="visually-hidden"></span>')
 
                 },
                 success: (response) => {
@@ -69,7 +69,7 @@
 
                     $(".add-feed-btn").html('Add Feed')
 
-                    if(response.rss_link) {
+                    if(response !=null && response.rss_link != null) {
 
                         $(".rss_link").css('display', 'block')
                         $(".rss_link").text(response.rss_link)
@@ -81,7 +81,7 @@
 
                     }
 
-                    
+                    console.log(response)
                 },
                 error: (error) => {
 
