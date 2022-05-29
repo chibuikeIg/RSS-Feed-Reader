@@ -50,7 +50,7 @@ func (fc FollowingController) Store(w http.ResponseWriter, r *http.Request, _ ro
 		return
 	}
 
-	xmlDoc := fc.xmlDoc(r.FormValue("rss_link"))
+	xmlDoc, rss_link := fc.xmlDoc(r.FormValue("rss_link"))
 
 	if xmlDoc == nil || xmlDoc.Find("rss").Length() == 0 {
 
@@ -59,7 +59,7 @@ func (fc FollowingController) Store(w http.ResponseWriter, r *http.Request, _ ro
 		return
 	}
 
-	json.NewEncoder(w).Encode(xmlDoc.Find("rss").Length())
+	json.NewEncoder(w).Encode(rss_link)
 
 	return
 }
@@ -100,9 +100,12 @@ func (fc FollowingController) IsValidDomainName(rss_link string) bool {
 	return false
 }
 
-func (fc FollowingController) xmlDoc(rss_link string) *goquery.Document {
+func (fc FollowingController) xmlDoc(rss_link string) (*goquery.Document, string) {
 
-	var xmlDoc *goquery.Document
+	var (
+		xmlDoc *goquery.Document
+		ltf    string // link to feed
+	)
 
 	if fc.IsValidDomainName(rss_link) == true {
 
@@ -124,6 +127,7 @@ func (fc FollowingController) xmlDoc(rss_link string) *goquery.Document {
 
 				if result >= 1 {
 					xmlDoc = doc
+					ltf = rss_link + val
 					break
 				} else {
 					continue
@@ -146,9 +150,10 @@ func (fc FollowingController) xmlDoc(rss_link string) *goquery.Document {
 
 			if result >= 1 {
 				xmlDoc = doc
+				ltf = rss_link
 			}
 		}
 	}
 
-	return xmlDoc
+	return xmlDoc, ltf
 }
