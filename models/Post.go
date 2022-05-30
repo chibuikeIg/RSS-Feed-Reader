@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -12,6 +14,6 @@ type Post struct {
 	slug        string             `bson:"slug,omitempty"`
 	description string             `bson:"description,omitempty"`
 	author      string             `bson:"author,omitempty"`
-	deleted_at  string             `bson:"deleted_at,omitempty"`
+	deleted_at  time.Time          `bson:"deleted_at,omitempty"`
 	created_at  string             `bson:"created_at,omitempty"`
 }
