@@ -30,11 +30,12 @@ func main() {
 
 	fc := controllers.NewFollowingController(DB)
 	lc := controllers.NewLoginController(DB)
+	hc := controllers.NewHomeController(DB)
+
+	router.GET("/", hc.Index)
 
 	router.GET("/following", fc.Index)
-
 	router.GET("/following/manage", fc.Create)
-
 	router.POST("/following/manage", fc.Store)
 
 	router.GET("/login", lc.Create)
