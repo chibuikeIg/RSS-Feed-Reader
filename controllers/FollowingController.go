@@ -104,7 +104,8 @@ func (fc FollowingController) Store(w http.ResponseWriter, r *http.Request, _ ro
 			Slug:        s.Find("link").Text(),
 			Description: desc,
 			Author:      s.Find("dc:creator").Text(),
-			Created_at:  s.Find("pubDate").Text(),
+			Pub_date:    s.Find("pubDate").Text(),
+			Created_at:  time.Now(),
 		}
 
 		feed_posts = append(feed_posts, post)
