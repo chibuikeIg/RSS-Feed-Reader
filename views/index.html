@@ -3,58 +3,33 @@
 <div class="container pb-5">
     <div class="row">
         <!-- // left side content  -->
-        <div class="col-md-10 offset-md-1">
-
-            <!-- // articles -->
-            <div class="row mt-5 article-card border-wt">
-                <div class="col-md-5 p-0">
-                    <img src="assets/images/web-dev.jpg" class="blog-cover-photo">
-                </div>
-                <div class="col-md-7">
-                    <h4 class="white-color raisin-font pt-3"><a href="post.html" class="text-deco-none white-color">Road Map To Becoming A Web Developer In 2019</a></h4>
-                    <p class="white-color Sulphur-point-font align-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum unde repudiandae animi qui. Dolores possimus recusandae veniam ...</p>
-                    <p class="white-color Sulphur-point-font mt-4 pub-date">Published November 27 2019, 30mins read</p>
-                </div>
-            </div>
-
-            <div class="row mt-5 article-card border-wt">
-                <div class="col-md-5 p-0">
-                    <img src="assets/images/web-trends-2019.jpg" class="blog-cover-photo">
-                </div>
-                <div class="col-md-7">
-                    <h4 class="white-color raisin-font pt-3"><a href="post.html" class="text-deco-none white-color">Web Development Trends To Checkout In 2019</a></h4>
-                    <p class="white-color Sulphur-point-font align-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum unde repudiandae animi qui. Dolores possimus recusandae veniam ...</p>
-                    <p class="white-color Sulphur-point-font mt-4 pub-date">Published November 27 2019, 30mins read</p>
-                </div>
-            </div>
-
-            <div class="row mt-5 article-card border-wt">
-                <div class="col-md-12">
-                    <h4 class="white-color raisin-font pt-3"><a href="post.html" class="text-deco-none white-color">Road Map To Becoming A Web Developer In 2019</a></h4>
-                    <p class="white-color Sulphur-point-font align-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus quia omnis, ex deserunt voluptates ad! Dolorum pariatur corrupti, nostrum quisquam fugit totam voluptate consequuntur sapiente molestias dolore fuga vero nemo...</p>
-                    <p class="white-color Sulphur-point-font mt-4 pub-date">Published November 27 2019, 30mins read</p>
-                </div>
-            </div>
-
-            <div class="row mt-5 article-card border-wt">
-                <div class="col-md-5 p-0">
-                    <img src="assets/images/php.jpg" class="blog-cover-photo">
-                </div>
-                <div class="col-md-7">
-                    <h4 class="white-color raisin-font pt-3"><a href="post.html" class="text-deco-none white-color">Why PHP Is Still Been Used In Web Development</a></h4>
-                    <p class="white-color Sulphur-point-font align-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum unde repudiandae animi qui. Dolores possimus recusandae veniam ...</p>
-                    <p class="white-color Sulphur-point-font mt-4 pub-date">Published November 27 2019, 30mins read</p>
-                </div>
-            </div>
-            <!-- // articles ends  -->
-            
-            <!-- // pagination  -->
-            <div class="cus-pagination text-center border-wt">
-                <a href="#" class="text-white paginator raisin-font d-block">View All</a>
-            </div>
-        </div>
+        <div class="col-md-10 offset-md-1 ajax-data"></div>
         <!-- // left side content ends  -->
     </div>
 </div>
 
 {{ template "footer" }}
+<script>
+    $(document).ready(()=>{
+        fetchData()
+    })
+
+
+    function fetchData() {
+
+        $.ajax({
+            url: "/following",
+            type: "GET",
+            beforeSend: function(xhr){xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');},
+            success: function(response) { 
+
+                $(".ajax-data").html(response)
+
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        });
+
+    }
+</script>

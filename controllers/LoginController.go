@@ -41,6 +41,8 @@ func (lc LoginController) Create(w http.ResponseWriter, r *http.Request, _ route
 	View(w, "login.html", map[string]string{
 		"credential": validation,
 	})
+
+	return
 }
 
 func (lc LoginController) Store(w http.ResponseWriter, r *http.Request, _ router.Params) {

@@ -31,7 +31,16 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 	middleware.Auth(w, r)
 
+	if r.Header.Get("X-Requested-With") == "xmlhttprequest" {
+
+		View(w, "ajax-index.html", nil)
+
+		return
+	}
+
 	View(w, "index.html", nil)
+
+	return
 
 }
 
@@ -39,6 +48,7 @@ func (fc FollowingController) Create(w http.ResponseWriter, r *http.Request, _ r
 	middleware.Auth(w, r)
 
 	View(w, "create.html", nil)
+	return
 }
 
 func (fc FollowingController) Store(w http.ResponseWriter, r *http.Request, _ router.Params) {
