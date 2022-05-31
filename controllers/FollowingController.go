@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -76,8 +75,6 @@ func (fc FollowingController) Store(w http.ResponseWriter, r *http.Request, _ ro
 	if err != nil {
 
 		json.NewEncoder(w).Encode(map[string]string{"error": "Technical Error Occured. Please try again"})
-
-		log.Fatal(err)
 
 		return
 

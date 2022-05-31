@@ -23,15 +23,18 @@ func NewDatabase(ctxVal time.Duration) (*Database, func()) {
 
 func (DB Database) Client() *mongo.Client {
 
-	client, err := mongo.NewClient(options.Client().ApplyURI(GetEnv("DATABASE_URL")))
+	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
+	clientOptions := options.Client().
+		ApplyURI(GetEnv("DATABASE_URL")).
+		SetServerAPIOptions(serverAPIOptions)
+
+	client, err := mongo.Connect(DB.Ctx, clientOptions)
 
 	if err != nil {
 
 		log.Fatal(err)
 
 	}
-
-	err = client.Connect(DB.Ctx)
 
 	return client
 }
