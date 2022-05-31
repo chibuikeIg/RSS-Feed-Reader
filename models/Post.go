@@ -8,12 +8,12 @@ import (
 
 type Post struct {
 	Id          primitive.ObjectID `bson:"_id,omitempty"`
-	feed_id     primitive.ObjectID `bson:"feed_id,omitempty"`
-	cover       string             `bson:"cover,omitempty"`
-	title       string             `bson:"title,omitempty"`
-	slug        string             `bson:"slug,omitempty"`
-	description string             `bson:"description,omitempty"`
-	author      string             `bson:"author,omitempty"`
-	deleted_at  time.Time          `bson:"deleted_at,omitempty"`
-	created_at  string             `bson:"created_at,omitempty"`
+	Feed_id     primitive.ObjectID `bson:"feed_id,omitempty"`
+	Cover       string             `bson:"cover,omitempty"`
+	Title       string             `bson:"title,omitempty"`
+	Slug        string             `bson:"slug,omitempty"`
+	Description string             `bson:"description,omitempty"`
+	Author      string             `bson:"author,omitempty"`
+	Deleted_at  time.Time          `bson:"deleted_at,omitempty"`
+	Created_at  string             `bson:"created_at,omitempty"`
 }

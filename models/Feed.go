@@ -8,6 +8,6 @@ import (
 
 type Feed struct {
 	Id         primitive.ObjectID `bson:"_id,omitempty"`
-	link       string             `bson:"link,omitempty"`
-	created_at time.Time          `bson:"created_at,omitempty"`
+	Link       string             `bson:"link,omitempty"`
+	Created_at time.Time          `bson:"created_at,omitempty"`
 }

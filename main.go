@@ -12,7 +12,7 @@ import (
 func main() {
 
 	// DB config
-	DB, cxtCancel := config.NewDatabase(30)
+	DB, cxtCancel := config.NewDatabase(1000)
 
 	defer cxtCancel()
 

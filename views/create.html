@@ -8,6 +8,8 @@
             <!-- // add rss starts -->
             <div class="row mt-5 mb">
                 <div class="col-md-12">
+                    <div class="alert alert-success" style="display: none;"></div>
+                    <div class="alert alert-danger" style="display: none;"></div>
                     <form class="add-rss-form" method="post">
                         <div class="input-group input-group-lg">
                             <input type="text" class="form-control" placeholder="Enter rss link" name="rss_link">
@@ -74,10 +76,24 @@
                         $(".rss_link").css('display', 'block')
                         $(".rss_link").text(response.rss_link)
 
+                    } else if(response !=null && response.error != null){
+
+                        $(".alert-danger").text(response.error)
+                        $(".alert-danger").css('display', 'block')
+                        $(".rss_link").css('display', 'none')
+                        $(".alert-success").css('display', 'none')
+
+                    } else if (response !=null && response.success != null) {
+                        $(".alert-success").text('Rss Feed added successfully. Please check the following page, to read posts from your feed.')
+                        $(".alert-success").css('display', 'block')
+                        $(".rss_link").css('display', 'none')
+                        $(".alert-danger").css('display', 'none')
+                        $(".add-rss-form").get(0).reset()
                     } else {
 
+                        $(".alert-success").css('display', 'none')
                         $(".rss_link").css('display', 'none')
-                        $(".rss_link").text('')
+                        $(".alert-danger").css('display', 'none')
 
                     }
 
@@ -87,7 +103,11 @@
 
                     $(".add-feed-btn").html('Add Feed')
 
-                    alert('Opps! Technical error occured: '+error.responseText)
+                    $(".alert-danger").text("Technical Error Occured. Please try again")
+                    $(".alert-danger").css('display', 'block')
+                    $(".alert-success").css('display', 'none')
+                    $(".rss_link").css('display', 'none')
+
                 }
             })
 

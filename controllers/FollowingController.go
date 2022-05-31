@@ -2,15 +2,20 @@ package controllers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"net/url"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/chibuikeIg/Rss_blog/config"
 	"github.com/chibuikeIg/Rss_blog/middleware"
+	"github.com/chibuikeIg/Rss_blog/models"
 	router "github.com/julienschmidt/httprouter"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type FollowingController struct{}
@@ -59,7 +64,68 @@ func (fc FollowingController) Store(w http.ResponseWriter, r *http.Request, _ ro
 		return
 	}
 
-	json.NewEncoder(w).Encode(rss_link)
+	// store rss link
+
+	Feed := models.Feed{
+		Link:       rss_link,
+		Created_at: time.Now(),
+	}
+
+	insertFeedResult, err := DB.Collection("feeds").InsertOne(DB.Ctx, Feed)
+
+	if err != nil {
+
+		json.NewEncoder(w).Encode(map[string]string{"error": "Technical Error Occured. Please try again"})
+
+		log.Fatal(err)
+
+		return
+
+	}
+
+	// store rss feeds/posts
+
+	var feed_posts []interface{}
+
+	xmlDoc.Find("item").Each(func(i int, s *goquery.Selection) {
+		// For each item found
+
+		cover, desc := "n/a", "n/a"
+
+		if val, err := s.Find("img").First().Attr("src"); err == true {
+			cover = val
+		}
+
+		if xmlDesc, err := s.Find("description").Html(); err == nil {
+			desc = xmlDesc
+		}
+
+		post := models.Post{
+			Feed_id:     insertFeedResult.InsertedID.(primitive.ObjectID),
+			Cover:       cover,
+			Title:       s.Find("title").Text(),
+			Slug:        s.Find("link").Text(),
+			Description: desc,
+			Author:      s.Find("dc:creator").Text(),
+			Created_at:  s.Find("pubDate").Text(),
+		}
+
+		feed_posts = append(feed_posts, post)
+
+	})
+
+	result, _ := DB.Collection("posts").InsertMany(DB.Ctx, feed_posts)
+
+	if len(result.InsertedIDs) == 0 {
+
+		json.NewEncoder(w).Encode(map[string]string{"error": "Technical Error Occured. Please try again"})
+
+		DB.Collection("feeds").DeleteOne(DB.Ctx, bson.D{{"_id", insertFeedResult.InsertedID.(primitive.ObjectID)}})
+
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 
 	return
 }
