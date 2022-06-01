@@ -18,6 +18,7 @@ import (
 	router "github.com/julienschmidt/httprouter"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -151,6 +152,32 @@ func (fc FollowingController) Store(w http.ResponseWriter, r *http.Request, _ ro
 
 		DB.Collection("feeds").DeleteOne(DB.Ctx, bson.D{{"_id", insertFeedResult.InsertedID.(primitive.ObjectID)}})
 
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+
+	return
+}
+
+func (fc FollowingController) Update(w http.ResponseWriter, r *http.Request, ps router.Params) {
+	middleware.Auth(w, r)
+
+	status := r.URL.Query().Get("status")
+
+	id, _ := primitive.ObjectIDFromHex(ps.ByName("id"))
+
+	var err error
+
+	if status == "read" {
+		_, err = DB.Collection("posts").UpdateOne(DB.Ctx, bson.D{{"_id", id}}, bson.D{{"$set", bson.D{{"read_at", time.Now()}}}})
+	} else if status == "unread" {
+		var t time.Time
+		_, err = DB.Collection("posts").UpdateOne(DB.Ctx, bson.D{{"_id", id}}, bson.D{{"$set", bson.D{{"read_at", t}}}})
+	}
+
+	if err == mongo.ErrNoDocuments {
+		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to mark post as read."})
 		return
 	}
 

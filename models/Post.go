@@ -15,6 +15,7 @@ type Post struct {
 	Description string             `bson:"description,omitempty"`
 	Author      string             `bson:"author,omitempty"`
 	Pub_date    string             `bson:"pub_date,omitempty"`
+	Read_at     time.Time          `bson:"read_at,omitempty"`
 	Deleted_at  time.Time          `bson:"deleted_at,omitempty"`
 	Created_at  time.Time          `bson:"created_at,omitempty"`
 }

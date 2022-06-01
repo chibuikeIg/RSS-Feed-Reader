@@ -10,7 +10,18 @@
             <h4 class="white-color raisin-font pt-3"><a href="{{ $post.Slug }}" target="_blank" class="text-deco-none white-color">{{ stripTags $post.Title }}</a></h4>
             
             <p class="white-color Sulphur-point-font align-justify">{{ $description := stripTags $post.Description }} {{ TruncateByWords $description 30 }}</p>
-            <p class="white-color Sulphur-point-font mt-4 pub-date">Published {{ $post.Pub_date }}</p>
+            <p class="white-color Sulphur-point-font mt-4 pub-date">
+                <div class="d-flex">
+                    <div class="w-75">Published {{ $post.Pub_date }}</div>
+                    <div class="w-25 text-right pr-4">
+                        {{ if $post.Read_at.IsZero }}
+                        <a href="javascript:void(0)" data-post-id="{{ parseObjectId $post.Id }}" data-post-read-status="read" class="set-read-at"><i class="fa fa-eye"></i></a>
+                        {{else}}
+                        <a href="javascript:void(0)" data-post-id="{{ parseObjectId $post.Id}}" data-post-read-status="unread" class="set-read-at"><i class="fa fa-eye-slash"></i></a>
+                        {{end}}
+                    </div>
+                </div>
+            </p>
         </div>
     </div>
 {{end}}
@@ -19,3 +30,31 @@
 <div class="text-center mt-5">Sorry No Feeds Found. Click the <a href="/following/manage">Manage Following link to add rss feeds</a></div>
 {{end}}
 <!-- // articles ends  -->
+
+<script>
+    $(".set-read-at").each((i, e) => {
+
+        $(e).click(()=> {
+
+            let post_id = $(e).attr("data-post-id")
+            let post_read_status =  $(e).attr("data-post-read-status")
+            $.ajax({
+
+                url: "/following/"+post_id+"/update?status="+post_read_status,
+                type: "PUT",
+                beforeSend: function(xhr){xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');},
+                success: function(response) { 
+                    response = JSON.parse(response)
+                    if(response.success) {
+                        fetchData()
+                    }
+                },
+                error: (error) => {
+                    console.log(error)
+                }
+            });
+            
+        })
+
+    })
+</script>

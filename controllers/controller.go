@@ -12,6 +12,7 @@ import (
 
 	"github.com/chibuikeIg/Rss_blog/config"
 	strip "github.com/grokify/html-strip-tags-go"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Rss struct {
@@ -46,11 +47,18 @@ var DB *config.Database
 var fm = template.FuncMap{
 	"stripTags":       stripTags,
 	"TruncateByWords": TruncateByWords,
+	"parseObjectId":   parseObjectId,
 }
 
 func stripTags(s string) string {
 	s = strip.StripTags(s)
 	return s
+}
+
+func parseObjectId(id interface{}) string {
+
+	return id.(primitive.ObjectID).Hex()
+
 }
 
 func TruncateByWords(s string, maxWords int) string {
