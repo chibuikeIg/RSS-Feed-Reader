@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -33,7 +34,19 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 	if r.Header.Get("X-Requested-With") == "xmlhttprequest" {
 
-		View(w, "ajax-index.html", nil)
+		cursor, err := DB.Collection("posts").Find(DB.Ctx, bson.M{})
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		var posts []models.Post
+
+		if err = cursor.All(DB.Ctx, &posts); err != nil {
+			log.Fatal(err)
+		}
+
+		View(w, "ajax-index.html", posts)
 
 		return
 	}

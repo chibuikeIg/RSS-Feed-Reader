@@ -1,20 +1,20 @@
 <!-- // articles -->
-<div class="row mt-5 article-card border-wt">
-    <div class="col-md-5 p-0">
-        <img src="assets/images/web-dev.jpg" class="blog-cover-photo">
+{{ range  $index, $post := . }}
+    <div class="row mt-5 article-card border-wt">
+        {{ if ne $post.Cover "n/a" }}
+        <div class="col-md-4 p-0 h-100">
+            <img src="{{ $post.Cover }}" class="blog-cover-photo h-100 d-block">
+        </div>
+        {{end}}
+        <div class="{{ if ne $post.Cover "n/a" }} col-md-8 {{ else }} col-md-12 {{end}}">
+            <h4 class="white-color raisin-font pt-3"><a href="{{ $post.Slug }}" target="_blank" class="text-deco-none white-color">{{ $post.Title }}</a></h4>
+            <p class="white-color Sulphur-point-font align-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum unde repudiandae animi qui. Dolores possimus recusandae veniam ...</p>
+            <p class="white-color Sulphur-point-font mt-4 pub-date">Published {{ $post.Pub_date }}</p>
+        </div>
     </div>
-    <div class="col-md-7">
-        <h4 class="white-color raisin-font pt-3"><a href="post.html" class="text-deco-none white-color">Road Map To Becoming A Web Developer In 2019</a></h4>
-        <p class="white-color Sulphur-point-font align-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum unde repudiandae animi qui. Dolores possimus recusandae veniam ...</p>
-        <p class="white-color Sulphur-point-font mt-4 pub-date">Published November 27 2019, 30mins read</p>
-    </div>
-</div>
+{{end}}
 
-<div class="row mt-5 article-card border-wt">
-    <div class="col-md-12">
-        <h4 class="white-color raisin-font pt-3"><a href="post.html" class="text-deco-none white-color">Road Map To Becoming A Web Developer In 2019</a></h4>
-        <p class="white-color Sulphur-point-font align-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus quia omnis, ex deserunt voluptates ad! Dolorum pariatur corrupti, nostrum quisquam fugit totam voluptate consequuntur sapiente molestias dolore fuga vero nemo...</p>
-        <p class="white-color Sulphur-point-font mt-4 pub-date">Published November 27 2019, 30mins read</p>
-    </div>
-</div>
+{{ if not . }}
+<div class="text-center mt-5">Sorry No Feeds Found. Click the <a href="/following/manage">Manage Following link to add rss feeds</a></div>
+{{end}}
 <!-- // articles ends  -->
