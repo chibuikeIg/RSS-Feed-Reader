@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
+	"encoding/xml"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -108,33 +110,38 @@ func (fc FollowingController) Store(w http.ResponseWriter, r *http.Request, _ ro
 
 	var feed_posts []interface{}
 
-	xmlDoc.Find("item").Each(func(i int, s *goquery.Selection) {
-		// For each item found
+	response, _ := http.Get(rss_link)
 
-		cover, desc := "n/a", "n/a"
+	byteValue, _ := ioutil.ReadAll(response.Body)
 
-		if val, err := s.Find("img").First().Attr("src"); err == true {
+	rss := Rss{}
+
+	xml.Unmarshal(byteValue, &rss)
+
+	for _, item := range rss.Channel.Items {
+
+		cover := "n/a"
+
+		doc, _ := goquery.NewDocumentFromReader(strings.NewReader(item.Description))
+
+		if val, err := doc.Find("img").First().Attr("src"); err == true {
 			cover = val
-		}
-
-		if xmlDesc, err := s.Find("description").Html(); err == nil {
-			desc = xmlDesc
 		}
 
 		post := models.Post{
 			Feed_id:     insertFeedResult.InsertedID.(primitive.ObjectID),
 			Cover:       cover,
-			Title:       s.Find("title").Text(),
-			Slug:        s.Find("link").Text(),
-			Description: desc,
-			Author:      s.Find("dc:creator").Text(),
-			Pub_date:    s.Find("pubDate").Text(),
+			Title:       item.Title,
+			Slug:        item.Link,
+			Description: item.Description,
+			Author:      item.Creator,
+			Pub_date:    item.PubDate,
 			Created_at:  time.Now(),
 		}
 
 		feed_posts = append(feed_posts, post)
 
-	})
+	}
 
 	result, _ := DB.Collection("posts").InsertMany(DB.Ctx, feed_posts)
 

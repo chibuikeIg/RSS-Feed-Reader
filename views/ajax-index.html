@@ -9,7 +9,7 @@
         <div class="{{ if ne $post.Cover "n/a" }} col-md-8 {{ else }} col-md-12 {{end}}">
             <h4 class="white-color raisin-font pt-3"><a href="{{ $post.Slug }}" target="_blank" class="text-deco-none white-color">{{ stripTags $post.Title }}</a></h4>
             
-            <p class="white-color Sulphur-point-font align-justify">{{ $description := stripTags $post.Description }} {{ TruncateByWords $description 50 }}</p>
+            <p class="white-color Sulphur-point-font align-justify">{{ $description := stripTags $post.Description }} {{ TruncateByWords $description 30 }}</p>
             <p class="white-color Sulphur-point-font mt-4 pub-date">Published {{ $post.Pub_date }}</p>
         </div>
     </div>

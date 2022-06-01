@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/xml"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +13,33 @@ import (
 	"github.com/chibuikeIg/Rss_blog/config"
 	strip "github.com/grokify/html-strip-tags-go"
 )
+
+type Rss struct {
+	XMLName     xml.Name `xml:"rss"`
+	Version     string   `xml:"version,attr"`
+	Channel     Channel  `xml:"channel"`
+	Description string   `xml:"description"`
+	Title       string   `xml:"title"`
+	Link        string   `xml:"link"`
+}
+
+type Channel struct {
+	XMLName     xml.Name `xml:"channel"`
+	Title       string   `xml:"title"`
+	Link        string   `xml:"link"`
+	Description string   `xml:"description"`
+	Items       []Item   `xml:"item"`
+}
+
+type Item struct {
+	XMLName     xml.Name `xml:"item"`
+	Title       string   `xml:"title"`
+	Link        string   `xml:"link"`
+	Description string   `xml:"description"`
+	PubDate     string   `xml:"pubDate"`
+	Guid        string   `xml:"guid"`
+	Creator     string   `xml:"dc:creator"`
+}
 
 var DB *config.Database
 
