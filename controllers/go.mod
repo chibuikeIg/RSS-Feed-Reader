@@ -8,6 +8,7 @@ require (
 	github.com/chibuikeIg/Rss_blog/config v0.0.0-00010101000000-000000000000
 	github.com/chibuikeIg/Rss_blog/middleware v0.0.0-00010101000000-000000000000
 	github.com/chibuikeIg/Rss_blog/models v0.0.0-20220521113637-c60a7fc6938e
+	github.com/grokify/html-strip-tags-go v0.0.1
 	github.com/julienschmidt/httprouter v1.3.0
 	go.mongodb.org/mongo-driver v1.9.1
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e

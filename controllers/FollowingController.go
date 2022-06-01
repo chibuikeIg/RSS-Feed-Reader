@@ -16,6 +16,7 @@ import (
 	router "github.com/julienschmidt/httprouter"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type FollowingController struct{}
@@ -34,7 +35,7 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 	if r.Header.Get("X-Requested-With") == "xmlhttprequest" {
 
-		cursor, err := DB.Collection("posts").Find(DB.Ctx, bson.M{})
+		cursor, err := DB.Collection("posts").Find(DB.Ctx, bson.M{}, options.Find().SetSort(bson.D{{"created", -1}}))
 
 		if err != nil {
 			log.Fatal(err)
