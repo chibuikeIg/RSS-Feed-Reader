@@ -36,13 +36,12 @@ func main() {
 	router.GET("/", hc.Index)
 
 	router.GET("/following", fc.Index)
-
 	router.PUT("/following/:id/update", fc.Update)
 	router.DELETE("/following/:id/delete", fc.Delete)
 
 	router.GET("/following/feeds", ffc.Create)
 	router.POST("/following/feeds", ffc.Store)
-	router.DELETE("/following/feeds/:id/delete", ffc.Delete)
+	router.DELETE("/feeds/:feed_id/delete", ffc.Delete)
 
 	router.GET("/login", lc.Create)
 	router.POST("/login", lc.Store)

@@ -179,7 +179,21 @@ func (fc FeedController) Update(w http.ResponseWriter, r *http.Request, ps route
 func (fc FeedController) Delete(w http.ResponseWriter, r *http.Request, ps router.Params) {
 	middleware.Auth(w, r)
 
-	// id, _ := primitive.ObjectIDFromHex(ps.ByName("id"))
+	id, _ := primitive.ObjectIDFromHex(ps.ByName("feed_id"))
+
+	_, err := DB.Collection("posts").DeleteMany(DB.Ctx, bson.D{{"feed_id", id}})
+
+	if err != nil {
+		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to delete feed."})
+		return
+	}
+
+	_, err = DB.Collection("feeds").DeleteOne(DB.Ctx, bson.D{{"_id", id}})
+
+	if err == mongo.ErrNoDocuments {
+		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to delete feed."})
+		return
+	}
 
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 

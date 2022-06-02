@@ -16,9 +16,13 @@
             <td><a href="{{ $feed.Link }}" target="_blank">{{ $feed.Link }}</a></td>
             <td>{{ $feed.Created_at }}</td>
             <td class="text-center">
-                <a href="javascript:void(0)" data-feed-id="{{ parseObjectId $post.Id }}" class="btn btn-sm btn-danger remove-feed">Delete</a>
+                <a href="javascript:void(0)" data-feed-id="{{ parseObjectId $feed.Id }}" class="btn btn-sm btn-danger remove-feed">Delete</a>
             </td>
         </tr>
+        {{end}}
+
+        {{ if not . }}
+        <tr><td colspan="4">No Records Found</td></tr>
         {{end}}
     </tbody>
 </table>
@@ -31,7 +35,7 @@
             let feed_id = $(e).attr("data-feed-id")
 
             $.ajax({
-                url: "/following/feeds/"+feed_id+"/delete",
+                url: "/feeds/"+feed_id+"/delete",
                 type: "DELETE",
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
