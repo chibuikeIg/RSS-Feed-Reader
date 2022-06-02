@@ -12,13 +12,14 @@
             <p class="white-color Sulphur-point-font align-justify">{{ $description := stripTags $post.Description }} {{ TruncateByWords $description 30 }}</p>
             <p class="white-color Sulphur-point-font mt-4 pub-date">
                 <div class="d-flex">
-                    <div class="w-75">Published {{ $post.Pub_date }}</div>
-                    <div class="w-25 text-right pr-4">
+                    <div class="w-50">Published {{ $post.Pub_date }}</div>
+                    <div class="w-50 text-right pr-4">
                         {{ if $post.Read_at.IsZero }}
-                        <a href="javascript:void(0)" data-post-id="{{ parseObjectId $post.Id }}" data-post-read-status="read" class="set-read-at"><i class="fa fa-eye"></i></a>
+                        <a href="javascript:void(0)" data-post-id="{{ parseObjectId $post.Id }}" data-post-read-status="read" class="btn btn-sm btn-secondary set-read-at">Mark As Read</a>
                         {{else}}
-                        <a href="javascript:void(0)" data-post-id="{{ parseObjectId $post.Id}}" data-post-read-status="unread" class="set-read-at"><i class="fa fa-eye-slash"></i></a>
+                        <a href="javascript:void(0)" data-post-id="{{ parseObjectId $post.Id}}" data-post-read-status="unread" class="btn btn-sm btn-info set-read-at">Mark As Unread</a>
                         {{end}}
+                        <a href="javascript:void(0)" data-post-id="{{ parseObjectId $post.Id }}" class="btn btn-sm btn-danger remove-post"><i class="fa fa-trash"></i></a>
                     </div>
                 </div>
             </p>
@@ -42,14 +43,56 @@
 
                 url: "/following/"+post_id+"/update?status="+post_read_status,
                 type: "PUT",
-                beforeSend: function(xhr){xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');},
-                success: function(response) { 
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
+                    $(e).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="visually-hidden"></span>')
+                },
+                success: function(response) {
+
                     response = JSON.parse(response)
                     if(response.success) {
                         fetchData()
                     }
                 },
                 error: (error) => {
+                    $(e).html('Mark As Read')
+                    console.log(error)
+                }
+            });
+            
+        })
+
+    })
+
+    $(".remove-post").each((i, e) => {
+
+        $(e).click(() => {
+
+            let post_id = $(e).attr("data-post-id")
+
+            $.ajax({
+                url: "/following/"+post_id+"/delete",
+                type: "DELETE",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
+
+                    $(e).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="visually-hidden"></span>')
+                },
+                success: function(response) { 
+
+                    $(e).html('<i class="fa fa-trash"></i>')
+
+                    response = JSON.parse(response)
+
+                    if(response.success) {
+                        fetchData()
+                    }
+
+                },
+                error: (error) => {
+
+                    $(e).html('<i class="fa fa-trash"></i>')
+                    
                     console.log(error)
                 }
             });

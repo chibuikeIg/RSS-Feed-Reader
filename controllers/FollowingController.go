@@ -38,7 +38,7 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 	if r.Header.Get("X-Requested-With") == "xmlhttprequest" {
 
-		cursor, err := DB.Collection("posts").Find(DB.Ctx, bson.M{}, options.Find().SetSort(bson.D{{"created_at", -1}}))
+		cursor, err := DB.Collection("posts").Find(DB.Ctx, bson.D{{"deleted_at", nil}}, options.Find().SetSort(bson.D{{"created_at", -1}}))
 
 		if err != nil {
 			log.Fatal(err)
@@ -197,6 +197,23 @@ func (fc FollowingController) Update(w http.ResponseWriter, r *http.Request, ps 
 
 	if err == mongo.ErrNoDocuments {
 		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to mark post as read."})
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
+
+	return
+}
+
+func (fc FollowingController) Delete(w http.ResponseWriter, r *http.Request, ps router.Params) {
+	middleware.Auth(w, r)
+
+	id, _ := primitive.ObjectIDFromHex(ps.ByName("id"))
+
+	_, err := DB.Collection("posts").UpdateOne(DB.Ctx, bson.D{{"_id", id}}, bson.D{{"$set", bson.D{{"deleted_at", time.Now()}}}})
+
+	if err == mongo.ErrNoDocuments {
+		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to delete post."})
 		return
 	}
 
