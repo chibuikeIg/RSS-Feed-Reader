@@ -31,15 +31,18 @@ func main() {
 	fc := controllers.NewFollowingController(DB)
 	lc := controllers.NewLoginController(DB)
 	hc := controllers.NewHomeController(DB)
+	ffc := controllers.NewFeedController(DB)
 
 	router.GET("/", hc.Index)
 
 	router.GET("/following", fc.Index)
-	router.GET("/following/manage", fc.Create)
-	router.POST("/following/manage", fc.Store)
 
 	router.PUT("/following/:id/update", fc.Update)
 	router.DELETE("/following/:id/delete", fc.Delete)
+
+	router.GET("/following/feeds", ffc.Create)
+	router.POST("/following/feeds", ffc.Store)
+	router.DELETE("/following/feeds/:id/delete", ffc.Delete)
 
 	router.GET("/login", lc.Create)
 	router.POST("/login", lc.Store)
