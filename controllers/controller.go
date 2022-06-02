@@ -48,6 +48,9 @@ var fm = template.FuncMap{
 	"stripTags":       stripTags,
 	"TruncateByWords": TruncateByWords,
 	"parseObjectId":   parseObjectId,
+	"add": func(a int, b int) int {
+		return a + b
+	},
 }
 
 func stripTags(s string) string {

@@ -38,7 +38,7 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 	if r.Header.Get("X-Requested-With") == "xmlhttprequest" {
 
-		cursor, err := DB.Collection("posts").Find(DB.Ctx, bson.M{}, options.Find().SetSort(bson.D{{"created", -1}}))
+		cursor, err := DB.Collection("posts").Find(DB.Ctx, bson.M{}, options.Find().SetSort(bson.D{{"created_at", -1}}))
 
 		if err != nil {
 			log.Fatal(err)
@@ -50,7 +50,7 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 			log.Fatal(err)
 		}
 
-		View(w, "ajax-index.html", posts)
+		View(w, "feed-posts.html", posts)
 
 		return
 	}
@@ -63,6 +63,25 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 func (fc FollowingController) Create(w http.ResponseWriter, r *http.Request, _ router.Params) {
 	middleware.Auth(w, r)
+
+	if r.Header.Get("X-Requested-With") == "xmlhttprequest" {
+
+		cursor, err := DB.Collection("feeds").Find(DB.Ctx, bson.M{}, options.Find().SetSort(bson.D{{"created_at", -1}}))
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		var feeds []models.Feed
+
+		if err = cursor.All(DB.Ctx, &feeds); err != nil {
+			log.Fatal(err)
+		}
+
+		View(w, "rss-feeds.html", feeds)
+
+		return
+	}
 
 	View(w, "create.html", nil)
 	return

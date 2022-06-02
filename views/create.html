@@ -24,17 +24,8 @@
             </div>
             <!-- // add rss ends  -->
 
-            <!-- // articles -->
-            <div class="row mt-5 article-card border-wt">
-                <div class="col-md-5 p-0">
-                    <img src="/assets/images/web-dev.jpg" class="blog-cover-photo">
-                </div>
-                <div class="col-md-7">
-                    <h4 class="white-color raisin-font pt-3"><a href="post.html" class="text-deco-none white-color">Road Map To Becoming A Web Developer In 2019</a></h4>
-                    <p class="white-color Sulphur-point-font align-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum unde repudiandae animi qui. Dolores possimus recusandae veniam ...</p>
-                    <p class="white-color Sulphur-point-font mt-4 pub-date">Published November 27 2019, 30mins read</p>
-                </div>
-            </div>
+            <!-- // feeds -->
+            <div class="table-responsive mt-5 shadow border-wt data mb-5"></div>
             
         </div>
         <!-- // left side content ends  -->
@@ -47,6 +38,8 @@
 {{ define "js" }}
 <script>
     $(document).ready(()=> {
+
+        fetchData()
 
         $(".add-rss-form").submit((e)=> {
 
@@ -89,6 +82,7 @@
                         $(".rss_link").css('display', 'none')
                         $(".alert-danger").css('display', 'none')
                         $(".add-rss-form").get(0).reset()
+                        fetchData()
                     } else {
 
                         $(".alert-success").css('display', 'none')
@@ -114,5 +108,23 @@
         })
 
     })
+
+    function fetchData() {
+
+        $.ajax({
+            url: "/following/manage",
+            type: "GET",
+            beforeSend: function(xhr){xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');},
+            success: function(response) { 
+
+                $(".data").html(response)
+
+            },
+            error: (error) => {
+                console.log(error)
+            }
+        });
+
+    }
 </script>
 {{end}}

@@ -1,0 +1,24 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>S/n</th>
+            <th>Rss Feed</th>
+            <th>Date Created</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{$i:=0}}
+        {{ range $index, $feed := .}}
+        {{$i = add $i 1}}
+        <tr>
+            <td>{{ $i }}</td>
+            <td><a href="{{ $feed.Link }}" target="_blank">{{ $feed.Link }}</a></td>
+            <td>{{ $feed.Created_at }}</td>
+            <td class="text-center">
+                <a href="javascript:void(0)" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
