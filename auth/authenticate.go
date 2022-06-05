@@ -30,3 +30,24 @@ func Login(user *models.User, w http.ResponseWriter) *models.User {
 	return user
 
 }
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+
+	// get cookie
+	c, _ := r.Cookie("session")
+
+	// delete session
+
+	delete(Sessions, c.Value)
+
+	c = &http.Cookie{
+		Name:   "session",
+		Value:  "",
+		MaxAge: -1,
+	}
+
+	http.SetCookie(w, c)
+
+	return
+
+}

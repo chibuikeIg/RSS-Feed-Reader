@@ -45,6 +45,7 @@ func main() {
 
 	router.GET("/login", lc.Create)
 	router.POST("/login", lc.Store)
+	router.GET("/logout", lc.Logout)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 

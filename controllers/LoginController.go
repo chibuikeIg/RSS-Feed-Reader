@@ -66,6 +66,18 @@ func (lc LoginController) Store(w http.ResponseWriter, r *http.Request, _ router
 	return
 }
 
+func (lc LoginController) Logout(w http.ResponseWriter, r *http.Request, _ router.Params) {
+
+	middleware.Auth(w, r)
+
+	auth.Logout(w, r)
+
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
+
+	return
+
+}
+
 func (uc LoginController) ValidateLoginRequest(r *http.Request) (models.User, map[string]string) {
 
 	var user models.User
