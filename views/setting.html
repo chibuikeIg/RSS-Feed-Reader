@@ -1,0 +1,87 @@
+{{template "header"}}
+
+<div class="container pb-5">
+    <div class="row">
+        <!-- // left side content  -->
+        <div class="col-md-10 offset-md-1">
+
+            <!-- // add rss starts -->
+            <div class="row mt-5 mb">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Feed Settings</h4>
+                        </div>
+                        <div class="card-body">
+                            <form class="settings-form" method="post">
+                                <div class="form-group">
+                                    <label class="label-control">Feed Summary Length</label>
+                                    <input type="number" min="1" class="form-control el" placeholder="0" name="summary_length" value="30">
+                                    <span style="font-size: 12px;" class="summary_length text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label-control">Polling Frequency (Minutes)</label>
+                                    <input type="number" min="10" class="form-control el" placeholder="0" name="polling_frequency" value="10">
+                                    <span style="font-size: 12px;" class="polling_frequency text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary saveChngBtn">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // add rss ends  -->
+
+        </div>
+        <!-- // left side content ends  -->
+        
+    </div>
+</div>
+
+{{ template "footer" }}
+
+{{ define "js" }}
+
+<script>
+    $(".settings-form").submit((e)=>{
+        e.preventDefault()
+
+        let formData = new FormData($(".settings-form").get(0))
+
+
+        $.ajax({
+            url: "/feed/settings",
+            method: "POST",
+            processData: false,
+            contentType: false,
+            data: formData,
+            beforeSend: () => {
+
+                $(".saveChngBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="visually-hidden"></span>')
+
+            },
+            success: (response) => {
+
+                response = JSON.parse(response)
+
+                $(".saveChngBtn").html('Save Changes')
+
+                console.log(response)
+
+                handleError(response)
+
+            },
+            error: (error) => {
+
+                $(".saveChngBtn").html('Save Changes')
+
+                console.log(error)
+
+            }
+        })
+    })
+</script>
+
+{{end}}

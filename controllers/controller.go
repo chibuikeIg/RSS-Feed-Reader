@@ -45,7 +45,6 @@ type Item struct {
 }
 
 var DB *config.Database
-var quiteChannel *chan struct{}
 
 var fm = template.FuncMap{
 	"stripTags":       stripTags,
@@ -152,15 +151,14 @@ func findAndStoreFeeds() {
 
 func FetchFeed(quit chan struct{}) {
 
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(10 * time.Second)
 
 	for {
 		select {
 		case <-ticker.C:
 			findAndStoreFeeds()
 		case <-quit:
-			// ticker.Stop()
-			fmt.Println("Done here")
+			ticker.Stop()
 			return
 		}
 	}

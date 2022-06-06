@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-	quit := make(chan struct{})
+	// quit := make(chan struct{})
 
 	// DB config
 	DB, cxtCancel := config.NewDatabase(1000)
@@ -33,7 +33,8 @@ func main() {
 	fc := controllers.NewFollowingController(DB)
 	lc := controllers.NewLoginController(DB)
 	hc := controllers.NewHomeController(DB)
-	ffc := controllers.NewFeedController(DB, &quit)
+	ffc := controllers.NewFeedController(DB)
+	fsc := controllers.NewFeedSettingController(DB)
 
 	router.GET("/", hc.Index)
 
@@ -44,6 +45,10 @@ func main() {
 	router.GET("/following/feeds", ffc.Create)
 	router.POST("/following/feeds", ffc.Store)
 	router.DELETE("/feeds/:feed_id/delete", ffc.Delete)
+
+	router.GET("/feed/settings", fsc.Create)
+
+	router.POST("/feed/settings", fsc.Store)
 
 	router.GET("/login", lc.Create)
 	router.POST("/login", lc.Store)

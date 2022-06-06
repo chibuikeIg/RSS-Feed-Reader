@@ -24,11 +24,9 @@ import (
 
 type FeedController struct{}
 
-func NewFeedController(DBConn *config.Database, quite *chan struct{}) *FeedController {
+func NewFeedController(DBConn *config.Database) *FeedController {
 
 	DB = DBConn
-
-	quiteChannel = quite
 
 	return &FeedController{}
 
