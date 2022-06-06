@@ -11,6 +11,8 @@ import (
 
 func main() {
 
+	quit := make(chan struct{})
+
 	// DB config
 	DB, cxtCancel := config.NewDatabase(1000)
 
@@ -31,7 +33,7 @@ func main() {
 	fc := controllers.NewFollowingController(DB)
 	lc := controllers.NewLoginController(DB)
 	hc := controllers.NewHomeController(DB)
-	ffc := controllers.NewFeedController(DB)
+	ffc := controllers.NewFeedController(DB, &quit)
 
 	router.GET("/", hc.Index)
 
@@ -46,6 +48,8 @@ func main() {
 	router.GET("/login", lc.Create)
 	router.POST("/login", lc.Store)
 	router.GET("/logout", lc.Logout)
+
+	// go controllers.FetchFeed(quit)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 

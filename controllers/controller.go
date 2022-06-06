@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"encoding/xml"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"text/template"
+	"time"
 	"unicode"
 	"unicode/utf8"
 
@@ -43,6 +45,7 @@ type Item struct {
 }
 
 var DB *config.Database
+var quiteChannel *chan struct{}
 
 var fm = template.FuncMap{
 	"stripTags":       stripTags,
@@ -140,4 +143,26 @@ func View(w http.ResponseWriter, view string, data any) {
 	}
 
 	tpl.Execute(w, data)
+}
+
+func findAndStoreFeeds() {
+	fmt.Println("Feed Found")
+	return
+}
+
+func FetchFeed(quit chan struct{}) {
+
+	ticker := time.NewTicker(5 * time.Second)
+
+	for {
+		select {
+		case <-ticker.C:
+			findAndStoreFeeds()
+		case <-quit:
+			// ticker.Stop()
+			fmt.Println("Done here")
+			return
+		}
+	}
+
 }
