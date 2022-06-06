@@ -1,5 +1,7 @@
 <!-- // articles -->
-{{ range  $index, $post := . }}
+{{ $posts := .posts }}
+{{ $summary_length := .summary_length }}
+{{ range  $index, $post := $posts }}
     <div class="row mt-5 article-card border-wt">
         {{ if ne $post.Cover "n/a" }}
         <div class="col-md-4 p-0 h-100">
@@ -9,7 +11,7 @@
         <div class="{{ if ne $post.Cover "n/a" }} col-md-8 {{ else }} col-md-12 {{end}}">
             <h4 class="white-color raisin-font pt-3"><a href="{{ $post.Slug }}" target="_blank" class="text-deco-none white-color">{{ stripTags $post.Title }}</a></h4>
             
-            <p class="white-color Sulphur-point-font align-justify">{{ $description := stripTags $post.Description }} {{ TruncateByWords $description 30 }}</p>
+            <p class="white-color Sulphur-point-font align-justify">{{ $description := stripTags $post.Description }} {{ TruncateByWords $description $summary_length }}</p>
             <p class="white-color Sulphur-point-font mt-4 pub-date">
                 <div class="d-flex">
                     <div class="w-50">Published {{ $post.Pub_date }}</div>
@@ -27,7 +29,7 @@
     </div>
 {{end}}
 
-{{ if not . }}
+{{ if not .Posts }}
 <div class="text-center mt-5">Sorry No Feeds Found. Click the <a href="/following/manage">Manage Following link to add rss feeds</a></div>
 {{end}}
 <!-- // articles ends  -->

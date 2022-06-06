@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/chibuikeIg/Rss_blog/config"
@@ -44,7 +46,29 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 			log.Fatal(err)
 		}
 
-		View(w, "feed-posts.html", posts)
+		// get summary settings
+
+		filter := bson.D{}
+		opts := options.Find().SetLimit(1)
+		cursor, err = DB.Collection("settings").Find(context.TODO(), filter, opts)
+		var settings []models.Setting
+		if err = cursor.All(context.TODO(), &settings); err != nil {
+
+			log.Fatal(err)
+
+			return
+		}
+
+		summary_length := 30
+
+		if len(settings) > 0 {
+			summary_length, _ = strconv.Atoi(settings[0].Summary_length)
+		}
+
+		View(w, "feed-posts.html", map[string]any{
+			"posts":          posts,
+			"summary_length": summary_length,
+		})
 
 		return
 	}
