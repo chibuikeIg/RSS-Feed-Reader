@@ -13,6 +13,8 @@
                             <h4>Feed Settings</h4>
                         </div>
                         <div class="card-body">
+                            <div class="alert alert-success" style="display: none;"></div>
+                            <div class="alert alert-danger" style="display: none;"></div>
                             <form class="settings-form" method="post">
                                 <div class="form-group">
                                     <label class="label-control">Feed Summary Length</label>
@@ -65,6 +67,23 @@
                 response = JSON.parse(response)
 
                 $(".saveChngBtn").html('Save Changes')
+
+                if(response !=null && response.error != null){
+
+                    $(".alert-danger").text(response.error)
+                    $(".alert-danger").css('display', 'block')
+                    $(".alert-success").css('display', 'none')
+
+                } else if (response !=null && response.success != null) {
+                    $(".alert-success").text('Changes saved successfully.')
+                    $(".alert-success").css('display', 'block')
+                    $(".alert-danger").css('display', 'none')
+                } else {
+
+                    $(".alert-success").css('display', 'none')
+                    $(".alert-danger").css('display', 'none')
+
+                }
 
                 console.log(response)
 

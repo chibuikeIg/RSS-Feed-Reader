@@ -1,13 +1,18 @@
 package controllers
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/chibuikeIg/Rss_blog/config"
 	"github.com/chibuikeIg/Rss_blog/middleware"
+	"github.com/chibuikeIg/Rss_blog/models"
 	router "github.com/julienschmidt/httprouter"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type FeedSettingController struct{}
@@ -40,7 +45,52 @@ func (fsc FeedSettingController) Store(w http.ResponseWriter, r *http.Request, _
 		return
 	}
 
-	json.NewEncoder(w).Encode([]string{})
+	filter := bson.D{}
+	opts := options.Find().SetLimit(1)
+	cursor, err := DB.Collection("settings").Find(context.TODO(), filter, opts)
+	var results []models.Setting
+	if err = cursor.All(context.TODO(), &results); err != nil {
+
+		json.NewEncoder(w).Encode(map[string]string{"error": "Technical error occured, please try again."})
+
+		return
+	}
+
+	if len(results) == 0 {
+
+		if _, err := DB.Collection("settings").InsertOne(context.TODO(), models.Setting{
+			Summary_length: r.FormValue("summary_length"),
+			Polling_frequency: map[string]any{
+				"frequency": r.FormValue("polling_frequency"),
+				"last_poll": time.Now(),
+			},
+		}); err != nil {
+
+			json.NewEncoder(w).Encode(map[string]string{"error": "Technical error occured, please try again."})
+
+			return
+		}
+
+	} else {
+
+		filter := bson.D{{"_id", results[0].Id}}
+		update := bson.D{{"$set", models.Setting{
+			Summary_length: r.FormValue("summary_length"),
+			Polling_frequency: map[string]any{
+				"frequency": r.FormValue("polling_frequency"),
+				"last_poll": results[0].Polling_frequency["last_poll"],
+			},
+		}}}
+
+		if _, err := DB.Collection("settings").UpdateOne(context.TODO(), filter, update); err != nil {
+			json.NewEncoder(w).Encode(map[string]string{"error": "Technical error occured, please try again."})
+
+			return
+		}
+
+	}
+
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 
 	return
 

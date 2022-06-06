@@ -6,6 +6,6 @@ import (
 
 type Setting struct {
 	Id                primitive.ObjectID `bson:"_id,omitempty"`
-	summary_length    int                `bson:"summary_length,omitempty"`
-	polling_frequency map[string]any     `bson:"polling_frequency,omitempty"`
+	Summary_length    string             `bson:"summary_length,omitempty"`
+	Polling_frequency map[string]any     `bson:"polling_frequency,omitempty"`
 }
