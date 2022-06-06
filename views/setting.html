@@ -18,12 +18,12 @@
                             <form class="settings-form" method="post">
                                 <div class="form-group">
                                     <label class="label-control">Feed Summary Length</label>
-                                    <input type="number" min="1" class="form-control el" placeholder="0" name="summary_length" value="30">
+                                    <input type="number" min="1" class="form-control el" placeholder="0" name="summary_length" value="{{if . }}{{ (index . 0).Summary_length}}{{else}}30{{end}}">
                                     <span style="font-size: 12px;" class="summary_length text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <label class="label-control">Polling Frequency (Minutes)</label>
-                                    <input type="number" min="10" class="form-control el" placeholder="0" name="polling_frequency" value="10">
+                                    <input type="number" min="10" class="form-control el" placeholder="0" name="polling_frequency" value="{{if . }}{{ (index . 0).Polling_frequency.frequency }}{{else}}10{{end}}">
                                     <span style="font-size: 12px;" class="polling_frequency text-danger"></span>
                                 </div>
                                 <div class="form-group">

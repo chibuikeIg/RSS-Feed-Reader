@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -28,7 +29,18 @@ func NewFeedSettingController(DBConn *config.Database) *FeedSettingController {
 func (fsc FeedSettingController) Create(w http.ResponseWriter, r *http.Request, _ router.Params) {
 	middleware.Auth(w, r)
 
-	View(w, "setting.html", nil)
+	filter := bson.D{}
+	opts := options.Find().SetLimit(1)
+	cursor, err := DB.Collection("settings").Find(context.TODO(), filter, opts)
+	var results []models.Setting
+	if err = cursor.All(context.TODO(), &results); err != nil {
+
+		log.Fatal(err)
+
+		return
+	}
+
+	View(w, "setting.html", results)
 	return
 }
 
