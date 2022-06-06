@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -13,7 +12,6 @@ import (
 	"github.com/chibuikeIg/Rss_blog/models"
 	router "github.com/julienschmidt/httprouter"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type FeedSettingController struct{}
@@ -29,18 +27,11 @@ func NewFeedSettingController(DBConn *config.Database) *FeedSettingController {
 func (fsc FeedSettingController) Create(w http.ResponseWriter, r *http.Request, _ router.Params) {
 	middleware.Auth(w, r)
 
-	filter := bson.D{}
-	opts := options.Find().SetLimit(1)
-	cursor, err := DB.Collection("settings").Find(context.TODO(), filter, opts)
-	var results []models.Setting
-	if err = cursor.All(context.TODO(), &results); err != nil {
+	var settings []models.Setting
 
-		log.Fatal(err)
+	DB.Find("settings").First(&settings)
 
-		return
-	}
-
-	View(w, "setting.html", results)
+	View(w, "setting.html", settings)
 	return
 }
 
@@ -57,18 +48,11 @@ func (fsc FeedSettingController) Store(w http.ResponseWriter, r *http.Request, _
 		return
 	}
 
-	filter := bson.D{}
-	opts := options.Find().SetLimit(1)
-	cursor, err := DB.Collection("settings").Find(context.TODO(), filter, opts)
-	var results []models.Setting
-	if err = cursor.All(context.TODO(), &results); err != nil {
+	var settings []models.Setting
 
-		json.NewEncoder(w).Encode(map[string]string{"error": "Technical error occured, please try again."})
+	DB.Find("settings").First(&settings)
 
-		return
-	}
-
-	if len(results) == 0 {
+	if len(settings) == 0 {
 
 		if _, err := DB.Collection("settings").InsertOne(context.TODO(), models.Setting{
 			Summary_length: r.FormValue("summary_length"),
@@ -85,12 +69,12 @@ func (fsc FeedSettingController) Store(w http.ResponseWriter, r *http.Request, _
 
 	} else {
 
-		filter := bson.D{{"_id", results[0].Id}}
+		filter := bson.D{{"_id", settings[0].Id}}
 		update := bson.D{{"$set", models.Setting{
 			Summary_length: r.FormValue("summary_length"),
 			Polling_frequency: map[string]any{
 				"frequency": r.FormValue("polling_frequency"),
-				"last_poll": results[0].Polling_frequency["last_poll"],
+				"last_poll": settings[0].Polling_frequency["last_poll"],
 			},
 		}}}
 

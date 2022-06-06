@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"context"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -47,17 +46,9 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 		}
 
 		// get summary settings
-
-		filter := bson.D{}
-		opts := options.Find().SetLimit(1)
-		cursor, err = DB.Collection("settings").Find(context.TODO(), filter, opts)
 		var settings []models.Setting
-		if err = cursor.All(context.TODO(), &settings); err != nil {
 
-			log.Fatal(err)
-
-			return
-		}
+		DB.Find("settings").First(&settings)
 
 		summary_length := 30
 
