@@ -55,11 +55,9 @@ func (fsc FeedSettingController) Store(w http.ResponseWriter, r *http.Request, _
 	if len(settings) == 0 {
 
 		if _, err := DB.Collection("settings").InsertOne(context.TODO(), models.Setting{
-			Summary_length: r.FormValue("summary_length"),
-			Polling_frequency: map[string]any{
-				"frequency": r.FormValue("polling_frequency"),
-				"last_poll": time.Now(),
-			},
+			Summary_length:    r.FormValue("summary_length"),
+			Polling_frequency: r.FormValue("polling_frequency"),
+			Last_poll:         time.Now(),
 		}); err != nil {
 
 			json.NewEncoder(w).Encode(map[string]string{"error": "Technical error occured, please try again."})
@@ -71,11 +69,9 @@ func (fsc FeedSettingController) Store(w http.ResponseWriter, r *http.Request, _
 
 		filter := bson.D{{"_id", settings[0].Id}}
 		update := bson.D{{"$set", models.Setting{
-			Summary_length: r.FormValue("summary_length"),
-			Polling_frequency: map[string]any{
-				"frequency": r.FormValue("polling_frequency"),
-				"last_poll": settings[0].Polling_frequency["last_poll"],
-			},
+			Summary_length:    r.FormValue("summary_length"),
+			Polling_frequency: r.FormValue("polling_frequency"),
+			Last_poll:         settings[0].Last_poll,
 		}}}
 
 		if _, err := DB.Collection("settings").UpdateOne(context.TODO(), filter, update); err != nil {

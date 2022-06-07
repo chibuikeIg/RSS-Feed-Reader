@@ -7,12 +7,14 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"text/template"
 	"time"
 	"unicode"
 	"unicode/utf8"
 
 	"github.com/chibuikeIg/Rss_blog/config"
+	"github.com/chibuikeIg/Rss_blog/models"
 	strip "github.com/grokify/html-strip-tags-go"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -145,7 +147,28 @@ func View(w http.ResponseWriter, view string, data any) {
 }
 
 func findAndStoreFeeds() {
-	fmt.Println("Feed Found")
+
+	var settings []models.Setting
+
+	DB.Find("settings").First(&settings)
+
+	if len(settings) > 0 {
+
+		t1 := settings[0].Last_poll
+		t2 := time.Now()
+		diff := t2.Sub(t1)
+		last_poll, _ := strconv.Atoi(time.Time{}.Add(diff).Format("4"))
+		polling_frequency, _ := strconv.Atoi(settings[0].Polling_frequency)
+
+		if last_poll >= polling_frequency {
+
+			// crawl for feeds here
+
+			fmt.Println(last_poll)
+		}
+
+	}
+
 	return
 }
 
