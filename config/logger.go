@@ -17,6 +17,6 @@ func Log(s string) {
 
 	// make a buffer to keep chunks that are read
 
-	fi.WriteString(s + "\n====== NEW LOG START ======")
+	fi.WriteString(s + "\n====== NEW LOG START ======\n")
 
 }
