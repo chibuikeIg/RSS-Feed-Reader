@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 	"encoding/xml"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -168,7 +167,6 @@ func findAndStoreFeeds() {
 		diff := t2.Sub(t1)
 		last_poll, _ := strconv.Atoi(time.Time{}.Add(diff).Format("4"))
 		polling_frequency, _ := strconv.Atoi(settings[0].Polling_frequency)
-		fmt.Println("started crawling", last_poll)
 		if last_poll >= polling_frequency {
 
 			// get feeds here
