@@ -24,13 +24,17 @@
         $.ajax({
             url: "/following?s_qry="+s_qry,
             type: "GET",
-            beforeSend: function(xhr){xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');},
+            beforeSend: function(xhr){
+                xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
+                $(".ajax-data").html('<div class="text-center mt-5"><span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span><span class="visually-hidden"></span></div>')
+            },
             success: function(response) { 
 
                 $(".ajax-data").html(response)
 
             },
             error: (error) => {
+                $(".ajax-data").html('<div class="text-center mt-5">Unable to load content, please reload page.</div>')
                 console.log(error)
             }
         });

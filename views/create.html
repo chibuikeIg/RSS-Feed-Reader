@@ -25,7 +25,7 @@
             <!-- // add rss ends  -->
 
             <!-- // feeds -->
-            <div class="table-responsive mt-5 shadow border-wt data mb-5"></div>
+            <div class="data mb-5 mt-5"></div>
             
         </div>
         <!-- // left side content ends  -->
@@ -113,13 +113,17 @@
         $.ajax({
             url: "/following/feeds",
             type: "GET",
-            beforeSend: function(xhr){xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');},
+            beforeSend: function(xhr){
+                xhr.setRequestHeader('X-Requested-With', 'xmlhttprequest');
+                $(".data").html('<div class="text-center"><span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span><span class="visually-hidden"></span></div>')
+            },
             success: function(response) { 
 
                 $(".data").html(response)
 
             },
             error: (error) => {
+                $(".data").html('<div class="text-center">Unable to load content, please reload page.</div>')
                 console.log(error)
             }
         });
