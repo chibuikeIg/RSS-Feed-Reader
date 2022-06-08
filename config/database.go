@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -67,4 +68,18 @@ func (DB Database) First(model any) {
 
 		return
 	}
+}
+
+func (DB Database) CreateSearchIndex(n string) {
+
+	model := mongo.IndexModel{
+		Keys: bson.D{{n, "text"}},
+	}
+
+	name, err := DB.Collection("posts").Indexes().CreateOne(context.TODO(), model)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Name of Index Created: " + name)
 }

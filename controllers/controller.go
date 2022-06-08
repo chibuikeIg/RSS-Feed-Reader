@@ -242,7 +242,6 @@ func findAndStoreFeeds() {
 
 	}
 
-	fmt.Println("background service running...")
 	return
 }
 

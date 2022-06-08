@@ -29,11 +29,11 @@
     </div>
 {{end}}
 
-{{ if not .Posts }}
+{{ if not $posts }}
 <div class="text-center mt-5">Sorry No Feeds Found. Click the <a href="/following/manage">Manage Following link to add rss feeds</a></div>
 {{end}}
 <!-- // articles ends  -->
-
+<script src="/assets/js/switch.js"></script>
 <script>
     $(".set-read-at").each((i, e) => {
 

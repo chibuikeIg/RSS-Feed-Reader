@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-	quit := make(chan struct{})
+	// quit := make(chan struct{})
 
 	// DB config
 	DB, cxtCancel := config.NewDatabase(1000)
@@ -54,7 +54,7 @@ func main() {
 	router.POST("/login", lc.Store)
 	router.GET("/logout", lc.Logout)
 
-	go controllers.FetchFeed(quit)
+	// go controllers.FetchFeed(quit)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 

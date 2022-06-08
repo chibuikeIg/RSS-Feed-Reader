@@ -33,7 +33,15 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 	if r.Header.Get("X-Requested-With") == "xmlhttprequest" {
 
-		cursor, err := DB.Collection("posts").Find(DB.Ctx, bson.D{{"deleted_at", nil}}, options.Find().SetSort(bson.D{{"created_at", -1}}))
+		filter := bson.D{{"deleted_at", nil}}
+
+		if r.URL.Query().Get("s_qry") != "" && r.URL.Query().Get("s_qry") != "null" {
+
+			filter = bson.D{{"deleted_at", nil}, {"$text", bson.D{{"$search", r.URL.Query().Get("s_qry")}}}}
+
+		}
+
+		cursor, err := DB.Collection("posts").Find(DB.Ctx, filter, options.Find().SetSort(bson.D{{"created_at", -1}}))
 
 		if err != nil {
 			log.Fatal(err)

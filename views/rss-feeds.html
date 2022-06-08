@@ -1,9 +1,9 @@
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped white-color">
     <thead>
         <tr>
-            <th>S/n</th>
-            <th>Rss Feed</th>
-            <th>Date Created</th>
+            <th class="white-color">S/n</th>
+            <th class="white-color">Rss Feed</th>
+            <th class="white-color">Date Created</th>
             <th></th>
         </tr>
     </thead>
@@ -12,9 +12,9 @@
         {{ range $index, $feed := .}}
         {{$i = add $i 1}}
         <tr>
-            <td>{{ $i }}</td>
+            <td class="white-color">{{ $i }}</td>
             <td><a href="{{ $feed.Link }}" target="_blank">{{ $feed.Link }}</a></td>
-            <td>{{ $feed.Created_at }}</td>
+            <td class="white-color">{{ $feed.Created_at }}</td>
             <td class="text-center">
                 <a href="javascript:void(0)" data-feed-id="{{ parseObjectId $feed.Id }}" class="btn btn-sm btn-danger remove-feed">Delete</a>
             </td>
@@ -22,11 +22,11 @@
         {{end}}
 
         {{ if not . }}
-        <tr><td colspan="4" class="text-center">No Records Found</td></tr>
+        <tr><td colspan="4" class="text-center white-color">No Records Found</td></tr>
         {{end}}
     </tbody>
 </table>
-
+<script src="/assets/js/switch.js"></script>
 <script>
     $(".remove-feed").each((i, e) => {
 
