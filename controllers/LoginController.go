@@ -91,6 +91,8 @@ func (uc LoginController) ValidateLoginRequest(r *http.Request) (models.User, ma
 
 		handleError(err)
 
+		errors["credentials"] = "There was an error authenticating your request, please try again"
+
 	} else {
 
 		err = bcrypt.CompareHashAndPassword(user.Password, []byte(r.FormValue("password")))
