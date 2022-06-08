@@ -34,9 +34,7 @@ func (rc RegisterController) Store(w http.ResponseWriter, r *http.Request, _ rou
 	_, err := DB.Collection("users").InsertOne(DB.Ctx, user)
 
 	if err != nil {
-
-		panic(err)
-
+		handleError(err)
 	}
 
 	/// redirect or authenticate user

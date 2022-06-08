@@ -59,7 +59,7 @@ func (fsc FeedSettingController) Store(w http.ResponseWriter, r *http.Request, _
 			Polling_frequency: r.FormValue("polling_frequency"),
 			Last_poll:         time.Now(),
 		}); err != nil {
-
+			handleError(err)
 			json.NewEncoder(w).Encode(map[string]string{"error": "Technical error occured, please try again."})
 
 			return
@@ -75,6 +75,7 @@ func (fsc FeedSettingController) Store(w http.ResponseWriter, r *http.Request, _
 		}}}
 
 		if _, err := DB.Collection("settings").UpdateOne(context.TODO(), filter, update); err != nil {
+			handleError(err)
 			json.NewEncoder(w).Encode(map[string]string{"error": "Technical error occured, please try again."})
 
 			return

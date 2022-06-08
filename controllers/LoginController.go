@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/chibuikeIg/Rss_blog/auth"
@@ -90,14 +89,14 @@ func (uc LoginController) ValidateLoginRequest(r *http.Request) (models.User, ma
 
 	} else if err != nil {
 
-		log.Fatalln(err)
+		handleError(err)
 
 	} else {
 
 		err = bcrypt.CompareHashAndPassword(user.Password, []byte(r.FormValue("password")))
 
 		if err != nil {
-
+			handleError(err)
 			errors["credentials"] = "The Email/Password is invalid"
 		}
 

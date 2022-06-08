@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -39,15 +38,12 @@ func (fc FeedController) Create(w http.ResponseWriter, r *http.Request, _ router
 
 		cursor, err := DB.Collection("feeds").Find(DB.Ctx, bson.M{}, options.Find().SetSort(bson.D{{"created_at", -1}}))
 
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleError(err)
 
 		var feeds []models.Feed
 
-		if err = cursor.All(DB.Ctx, &feeds); err != nil {
-			log.Fatal(err)
-		}
+		err = cursor.All(DB.Ctx, &feeds)
+		handleError(err)
 
 		View(w, "rss-feeds.html", feeds)
 
@@ -91,6 +87,7 @@ func (fc FeedController) Store(w http.ResponseWriter, r *http.Request, _ router.
 
 	if err != nil {
 
+		handleError(err)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Technical Error Occured. Please try again"})
 
 		return
@@ -101,9 +98,12 @@ func (fc FeedController) Store(w http.ResponseWriter, r *http.Request, _ router.
 
 	var feed_posts []interface{}
 
-	response, _ := http.Get(rss_link)
+	response, err := http.Get(rss_link)
 
-	byteValue, _ := ioutil.ReadAll(response.Body)
+	handleError(err)
+
+	byteValue, err := ioutil.ReadAll(response.Body)
+	handleError(err)
 
 	rss := Rss{}
 
@@ -134,7 +134,9 @@ func (fc FeedController) Store(w http.ResponseWriter, r *http.Request, _ router.
 
 	}
 
-	result, _ := DB.Collection("posts").InsertMany(DB.Ctx, feed_posts)
+	result, err := DB.Collection("posts").InsertMany(DB.Ctx, feed_posts)
+
+	handleError(err)
 
 	if len(result.InsertedIDs) == 0 {
 
@@ -166,6 +168,7 @@ func (fc FeedController) Update(w http.ResponseWriter, r *http.Request, ps route
 		_, err = DB.Collection("posts").UpdateOne(DB.Ctx, bson.D{{"_id", id}}, bson.D{{"$set", bson.D{{"read_at", t}}}})
 	}
 
+	handleError(err)
 	if err == mongo.ErrNoDocuments {
 		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to mark post as read."})
 		return
@@ -184,12 +187,13 @@ func (fc FeedController) Delete(w http.ResponseWriter, r *http.Request, ps route
 	_, err := DB.Collection("posts").DeleteMany(DB.Ctx, bson.D{{"feed_id", id}})
 
 	if err != nil {
+		handleError(err)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to delete feed."})
 		return
 	}
 
 	_, err = DB.Collection("feeds").DeleteOne(DB.Ctx, bson.D{{"_id", id}})
-
+	handleError(err)
 	if err == mongo.ErrNoDocuments {
 		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to delete feed."})
 		return

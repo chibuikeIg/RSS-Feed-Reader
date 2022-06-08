@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -43,15 +42,12 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 		cursor, err := DB.Collection("posts").Find(DB.Ctx, filter, options.Find().SetSort(bson.D{{"created_at", -1}}))
 
-		if err != nil {
-			log.Fatal(err)
-		}
+		handleError(err)
 
 		var posts []models.Post
 
-		if err = cursor.All(DB.Ctx, &posts); err != nil {
-			log.Fatal(err)
-		}
+		err = cursor.All(DB.Ctx, &posts)
+		handleError(err)
 
 		// get summary settings
 		var settings []models.Setting
@@ -94,6 +90,8 @@ func (fc FollowingController) Update(w http.ResponseWriter, r *http.Request, ps 
 		_, err = DB.Collection("posts").UpdateOne(DB.Ctx, bson.D{{"_id", id}}, bson.D{{"$set", bson.D{{"read_at", t}}}})
 	}
 
+	handleError(err)
+
 	if err == mongo.ErrNoDocuments {
 		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to mark post as read."})
 		return
@@ -111,6 +109,7 @@ func (fc FollowingController) Delete(w http.ResponseWriter, r *http.Request, ps 
 
 	_, err := DB.Collection("posts").UpdateOne(DB.Ctx, bson.D{{"_id", id}}, bson.D{{"$set", bson.D{{"deleted_at", time.Now()}}}})
 
+	handleError(err)
 	if err == mongo.ErrNoDocuments {
 		json.NewEncoder(w).Encode(map[string]string{"error": "Unable to delete post."})
 		return

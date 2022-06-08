@@ -5,7 +5,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -116,6 +115,7 @@ func GetAllFilePathsInDirectory(dirpath string) ([]string, error) {
 	var paths []string
 	err := filepath.Walk(dirpath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
+			config.Log(err.Error())
 			return err
 		}
 		if !info.IsDir() {
@@ -124,6 +124,7 @@ func GetAllFilePathsInDirectory(dirpath string) ([]string, error) {
 		return nil
 	})
 	if err != nil {
+		config.Log(err.Error())
 		return nil, err
 	}
 	return paths, nil
@@ -133,6 +134,7 @@ func GetAllFilePathsInDirectory(dirpath string) ([]string, error) {
 func ParseDirectory(dirpath string, filename string) (*template.Template, error) {
 	paths, err := GetAllFilePathsInDirectory(dirpath)
 	if err != nil {
+		config.Log(err.Error())
 		return nil, err
 	}
 
@@ -146,7 +148,7 @@ func View(w http.ResponseWriter, view string, data any) {
 	tpl, err := ParseDirectory("./views", view)
 
 	if err != nil {
-		log.Fatal("Parse: ", err)
+		config.Log(err.Error())
 		return
 	}
 
@@ -174,13 +176,13 @@ func findAndStoreFeeds() {
 			cursor, err := DB.Collection("feeds").Find(DB.Ctx, bson.M{}, options.Find().SetSort(bson.D{{"created_at", -1}}))
 
 			if err != nil {
-				log.Fatalln(err)
+				config.Log(err.Error())
 			}
 
 			var feeds []models.Feed
 
 			if err = cursor.All(DB.Ctx, &feeds); err != nil {
-				log.Fatalln(err)
+				config.Log(err.Error())
 			}
 
 			// get latest posts from feeds
@@ -205,7 +207,11 @@ func findAndStoreFeeds() {
 
 						cover := "n/a"
 
-						doc, _ := goquery.NewDocumentFromReader(strings.NewReader(item.Description))
+						doc, err := goquery.NewDocumentFromReader(strings.NewReader(item.Description))
+
+						if err != nil {
+							config.Log(err.Error())
+						}
 
 						if val, err := doc.Find("img").First().Attr("src"); err == true {
 							cover = val
@@ -230,6 +236,10 @@ func findAndStoreFeeds() {
 
 				_, err = DB.Collection("posts").InsertMany(DB.Ctx, feed_posts)
 
+				if err != nil {
+					config.Log(err.Error())
+				}
+
 			}
 
 			// update last time polled
@@ -237,6 +247,10 @@ func findAndStoreFeeds() {
 			_, err = DB.Collection("settings").UpdateOne(context.TODO(), bson.D{{"_id", settings[0].Id}}, bson.D{{"$set", models.Setting{
 				Last_poll: time.Now(),
 			}}})
+
+			if err != nil {
+				config.Log(err.Error())
+			}
 
 		}
 
@@ -259,4 +273,10 @@ func FetchFeed(quit chan struct{}) {
 		}
 	}
 
+}
+
+func handleError(err error) {
+	if err != nil {
+		config.Log(err.Error())
+	}
 }

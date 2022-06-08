@@ -20,7 +20,7 @@ func main() {
 
 	defer func() {
 		if err := DB.Client().Disconnect(DB.Ctx); err != nil {
-			panic(err)
+			config.Log(err.Error())
 		}
 	}()
 

@@ -3,7 +3,6 @@ package config
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -35,7 +34,7 @@ func (DB Database) Client() *mongo.Client {
 
 	if err != nil {
 
-		log.Fatal(err)
+		Log(err.Error())
 
 	}
 
@@ -64,7 +63,7 @@ func (DB Database) First(model any) {
 	cursor, err := DB.Collection(DB.CollectionField).Find(context.TODO(), filter, opts)
 	if err = cursor.All(context.TODO(), model); err != nil {
 
-		log.Fatal(err)
+		Log(err.Error())
 
 		return
 	}
@@ -78,7 +77,7 @@ func (DB Database) CreateSearchIndex(n string) {
 
 	name, err := DB.Collection("posts").Indexes().CreateOne(context.TODO(), model)
 	if err != nil {
-		panic(err)
+		Log(err.Error())
 	}
 
 	fmt.Println("Name of Index Created: " + name)
