@@ -9,9 +9,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func main() {
-
+func init() {
 	quit := make(chan struct{})
+	go controllers.FetchFeed(quit)
+}
+
+func main() {
 
 	// DB config
 	DB, cxtCancel := config.NewDatabase(1000)
@@ -54,8 +57,6 @@ func main() {
 	router.POST("/login", lc.Store)
 	router.GET("/logout", lc.Logout)
 
-	go controllers.FetchFeed(quit)
-
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":80", router))
 
 }
