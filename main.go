@@ -42,6 +42,7 @@ func main() {
 	router.GET("/", hc.Index)
 
 	router.GET("/following", fc.Index)
+	router.GET("/following/latest-posts", fc.LatestPosts)
 	router.PUT("/following/:id/update", fc.Update)
 	router.DELETE("/following/:id/delete", fc.Delete)
 

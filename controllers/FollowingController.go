@@ -74,6 +74,52 @@ func (fc FollowingController) Index(w http.ResponseWriter, r *http.Request, _ ro
 
 }
 
+func (fc FollowingController) LatestPosts(w http.ResponseWriter, r *http.Request, _ router.Params) {
+	middleware.Auth(w, r)
+
+	if r.Header.Get("X-Requested-With") == "xmlhttprequest" {
+
+		filter := bson.D{{"deleted_at", nil}}
+
+		cursor, err := DB.Collection("posts").Find(DB.Ctx, filter, options.Find().SetSort(bson.D{{"created_at", -1}}))
+
+		handleError(err)
+
+		var posts []models.Post
+
+		err = cursor.All(DB.Ctx, &posts)
+
+		handleError(err)
+
+		currentPostsCount, _ := strconv.Atoi(r.URL.Query().Get("current_posts_count"))
+
+		if len(posts) > currentPostsCount {
+
+			// get summary settings
+			var settings []models.Setting
+
+			DB.Find("settings").First(&settings)
+
+			summary_length := 30
+
+			if len(settings) > 0 {
+				summary_length, _ = strconv.Atoi(settings[0].Summary_length)
+			}
+
+			View(w, "feed-posts.html", map[string]any{
+				"posts":          posts,
+				"summary_length": summary_length,
+			})
+
+			return
+
+		}
+
+	}
+
+	return
+}
+
 func (fc FollowingController) Update(w http.ResponseWriter, r *http.Request, ps router.Params) {
 	middleware.Auth(w, r)
 

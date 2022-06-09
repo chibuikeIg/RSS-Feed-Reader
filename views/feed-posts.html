@@ -2,7 +2,7 @@
 {{ $posts := .posts }}
 {{ $summary_length := .summary_length }}
 {{ range  $index, $post := $posts }}
-    <div class="row mt-5 article-card border-wt">
+    <div class="row mt-5 article-card border-wt" data-posts-count="{{ len $posts }}">
         {{ if ne $post.Cover "n/a" }}
         <div class="col-md-4 p-0 h-100">
             <img src="{{ $post.Cover }}" class="blog-cover-photo h-100 d-block">
