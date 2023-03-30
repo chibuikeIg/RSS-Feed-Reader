@@ -1,5 +1,5 @@
-# RSS FEED READER/BLOG
-#### RSS Feed Reader/Personal Blog App To Stay Up To Date With Latest Posts From Your Favorite Websites
+# RSS Feed Reader
+#### RSS Feed Reader App To Stay Up To Date With Latest Posts From Your Favorite Websites
 
 This is a short documentation on how to set up the project on your local machine
 
@@ -16,10 +16,3 @@ This is a short documentation on how to set up the project on your local machine
 4. on the root directory Run `go run main.go` or `go run .` to start your server (ensure you have completed setting up your enviroment variables)
 5. Open your browser and type in your project host and port number E.g `localhost:8080`.
 6. Login using the testuser account you created on your mongoDB test cluser.
-
-
-**To Test Live Version:** 
-###### Visit
-http://54.90.243.213/
-Password: random
-email: testuser@email.com
