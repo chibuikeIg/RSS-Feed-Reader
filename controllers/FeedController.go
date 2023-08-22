@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"encoding/xml"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -102,7 +102,7 @@ func (fc FeedController) Store(w http.ResponseWriter, r *http.Request, _ router.
 
 	handleError(err)
 
-	byteValue, err := ioutil.ReadAll(response.Body)
+	byteValue, err := io.ReadAll(response.Body)
 	handleError(err)
 
 	rss := Rss{}

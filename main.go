@@ -51,7 +51,6 @@ func main() {
 	router.DELETE("/feeds/:feed_id/delete", ffc.Delete)
 
 	router.GET("/feed/settings", fsc.Create)
-
 	router.POST("/feed/settings", fsc.Store)
 
 	router.GET("/login", lc.Create)
