@@ -74,6 +74,7 @@ func parseObjectId(id interface{}) string {
 }
 
 func TruncateByWords(s string, maxWords int) string {
+
 	processedWords := 0
 	wordStarted := false
 	for i := 0; i < len(s); {
@@ -111,7 +112,9 @@ func TruncateByWords(s string, maxWords int) string {
 // GetAllFilePathsInDirectory : Recursively get all file paths in directory, including sub-directories.
 
 func GetAllFilePathsInDirectory(dirpath string) ([]string, error) {
+
 	var paths []string
+
 	err := filepath.Walk(dirpath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			config.Log(err.Error())
@@ -122,15 +125,18 @@ func GetAllFilePathsInDirectory(dirpath string) ([]string, error) {
 		}
 		return nil
 	})
+
 	if err != nil {
 		config.Log(err.Error())
 		return nil, err
 	}
+
 	return paths, nil
 }
 
 // ParseDirectory : Recursively parse all files in directory, including sub-directories.
 func ParseDirectory(dirpath string, filename string) (*template.Template, error) {
+
 	paths, err := GetAllFilePathsInDirectory(dirpath)
 	if err != nil {
 		config.Log(err.Error())
@@ -262,12 +268,15 @@ func FetchFeed(quit chan struct{}) {
 	ticker := time.NewTicker(10 * time.Second)
 
 	for {
+
 		select {
+
 		case <-ticker.C:
 			findAndStoreFeeds()
 		case <-quit:
 			ticker.Stop()
 			return
+
 		}
 	}
 
